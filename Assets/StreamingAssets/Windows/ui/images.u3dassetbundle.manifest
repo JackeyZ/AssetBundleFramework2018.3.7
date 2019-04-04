@@ -1,0 +1,27 @@
+ManifestFileVersion: 0
+CRC: 4019481178
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: cbbb7afeab745856a13446509277f7cb
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8f81471f4cfc7bf93c7fa752ebb4eb40
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/AssetBundleResources/UI/Images/VoiceImg5.png
+- Assets/AssetBundleResources/UI/Images/text_bg.png
+- Assets/AssetBundleResources/UI/Images/VoiceImg3.png
+- Assets/AssetBundleResources/UI/Images/SpriteAtlas.spriteatlas
+- Assets/AssetBundleResources/UI/Images/title_bg.png
+- Assets/AssetBundleResources/UI/Images/VoiceImg.png
+- Assets/AssetBundleResources/UI/Images/VoiceImg6.png
+- Assets/AssetBundleResources/UI/Images/VoiceImg4.png
+Dependencies: []
