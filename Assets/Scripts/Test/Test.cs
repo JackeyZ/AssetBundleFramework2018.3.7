@@ -20,6 +20,7 @@ public class Test : MonoBehaviour
             nt.Find("Key3").GetComponent<Image>().LoadSprite("ui/images/playerview.u3dassetbundle", "btn_c");
             nt.Find("Key4").GetComponent<Image>().LoadSprite("ui/images/playerview.u3dassetbundle", "btn_d");
         }
+        //AssetBundleFramework.AssetBundleMgr.GetInstance().DisposeAllAssets(AssetBundleFramework.BundleClassify.Normal);
     }
 	
 	// Update is called once per frame

@@ -9,11 +9,11 @@ using UnityEditor;
 public class NameTable : MonoBehaviour, ISerializationCallbackReceiver
 {
     [SerializeField]
-    public int _Size;
+    private int _Size;
     [SerializeField]
-    public List<string> _keys;
+    private List<string> _keys;
     [SerializeField]
-    public List<GameObject> _values;
+    private List<GameObject> _values;
 
     [SerializeField]
     public Dictionary<string, GameObject> _DicGameObject;
@@ -45,39 +45,39 @@ public class NameTable : MonoBehaviour, ISerializationCallbackReceiver
             }
         }
     }
-}
 
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(NameTable))]
-public class NameTableEditor : Editor
-{
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(NameTable))]
+    public class NameTableEditor : Editor
     {
+        public override void OnInspectorGUI()
+        {
 
-        //获取脚本对象
-        NameTable script = target as NameTable;
-        script._Size = Mathf.Min(EditorGUILayout.IntField("数量：", script._Size), 100);
-        if (script._keys == null)
-        {
-            script._keys = new List<string>();
-            script._values = new List<GameObject>();
-        }
-        int i = 0;
-        for (i = 0; i < script._Size; i++)
-        {
-            if (i >= script._keys.Count)
+            //获取脚本对象
+            NameTable script = target as NameTable;
+            script._Size = Mathf.Min(EditorGUILayout.IntField("数量：", script._Size), 100);
+            if (script._keys == null)
             {
-                script._keys.Add("");
-                script._values.Add(null);
+                script._keys = new List<string>();
+                script._values = new List<GameObject>();
             }
-            EditorGUILayout.BeginHorizontal();
-            script._keys[i] = EditorGUILayout.TextField(script._keys[i]);
-            script._values[i] = EditorGUILayout.ObjectField(script._values[i], typeof(GameObject), true) as GameObject;
-            EditorGUILayout.EndHorizontal();
+            int i = 0;
+            for (i = 0; i < script._Size; i++)
+            {
+                if (i >= script._keys.Count)
+                {
+                    script._keys.Add("");
+                    script._values.Add(null);
+                }
+                EditorGUILayout.BeginHorizontal();
+                script._keys[i] = EditorGUILayout.TextField(script._keys[i]);
+                script._values[i] = EditorGUILayout.ObjectField(script._values[i], typeof(GameObject), true) as GameObject;
+                EditorGUILayout.EndHorizontal();
+            }
+            script._keys.RemoveRange(i, script._keys.Count - i);
         }
-        script._keys.RemoveRange(i, script._keys.Count - i);
     }
-}
 
 #endif
+}

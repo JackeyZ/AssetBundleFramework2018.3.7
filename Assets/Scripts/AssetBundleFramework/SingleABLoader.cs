@@ -38,6 +38,8 @@ namespace AssetBundleFramework
 
         private bool _Loaded = false;       // 是否加载成功
 
+        private bool _IsDispose = false;    // 是否已卸载
+
         /// <summary>
         /// 是否加载成功
         /// </summary>
@@ -69,25 +71,30 @@ namespace AssetBundleFramework
             if(_Loading == false)
             {
                 _Loading = true;
-                UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(_ABDownLoadPath);
-                yield return request.SendWebRequest();
-                //取得ab的方式1
-                //AssetBundle ab_prefab = DownloadHandlerAssetBundle.GetContent(request);
-                //取得ab的方式2
-                AssetBundle ab_prefab = (request.downloadHandler as DownloadHandlerAssetBundle).assetBundle;
-                _Loading = false;
-                if (ab_prefab == null)
+                using (UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(_ABDownLoadPath))
                 {
-                    Debug.LogError(GetType() + "LoadAssetBundle失败：" + _ABDownLoadPath);
-                    yield return null;
-                }
-                else
-                {
-                    _Loaded = true;
-                    _AssetLoader = new AssetLoader(ab_prefab);
-                    if (_LoadCallback != null)
+                    yield return request.SendWebRequest();
+                    //取得ab的方式1
+                    //AssetBundle ab_prefab = DownloadHandlerAssetBundle.GetContent(request);
+                    //取得ab的方式2
+                    AssetBundle ab_prefab = (request.downloadHandler as DownloadHandlerAssetBundle).assetBundle;
+                    _Loading = false;
+                    if (_IsDispose == false)
                     {
-                        _LoadCallback(_ABName);
+                        if (ab_prefab == null)
+                        {
+                            Debug.LogError(GetType() + "LoadAssetBundle失败：" + _ABDownLoadPath);
+                            yield return null;
+                        }
+                        else
+                        {
+                            _Loaded = true;
+                            _AssetLoader = new AssetLoader(ab_prefab);
+                            if (_LoadCallback != null)
+                            {
+                                _LoadCallback(_ABName);
+                            }
+                        }
                     }
                 }
             }
@@ -129,6 +136,7 @@ namespace AssetBundleFramework
         /// </summary>
         public void Dispose()
         {
+            _IsDispose = true;
             if (_AssetLoader != null)
             {
                 _AssetLoader.Dispose();
@@ -147,12 +155,14 @@ namespace AssetBundleFramework
         /// </summary>
         public void DisposeAll()
         {
+            _IsDispose = true;
             if (_AssetLoader != null)
             {
                 _AssetLoader.DisposeAll();
                 _Loaded = false;
                 _Loading = false;
                 _AssetLoader = null;
+                _LoadCallback = null;
             }
             else
             {

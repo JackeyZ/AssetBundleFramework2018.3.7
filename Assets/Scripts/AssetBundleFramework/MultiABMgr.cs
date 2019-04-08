@@ -220,6 +220,7 @@ namespace AssetBundleFramework
                 _DicABRelation.Clear();
                 _DicABRelation = null;
                 _CurrentABName = null;
+                _LoadAllAssetBundleCompleteList.Clear();
                 _LoadAllAssetBundleCompleteList = null;
 
                 //卸载没有使用到的资源

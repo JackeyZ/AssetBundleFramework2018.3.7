@@ -27,7 +27,7 @@ namespace AssetBundleFramework
         //本类实例
         private static AssetBundleMgr _Instance;
         //场景集合
-        private Dictionary<BundleClassify, MultiABMgr> _DicAllScenes = new Dictionary<BundleClassify, MultiABMgr>();
+        private Dictionary<BundleClassify, MultiABMgr> _DicAllClassify = new Dictionary<BundleClassify, MultiABMgr>();
         //AssetBundle （清单文件） 系统类
         private AssetBundleManifest _ManifestObj = null;
 
@@ -63,7 +63,7 @@ namespace AssetBundleFramework
             //参数检查
             if (string.IsNullOrEmpty(abName))
             {
-                Debug.LogError(GetType()+ "/LoadAssetBundlePack()/ScenesName Or abName is null ,请检查！");
+                Debug.LogError(GetType()+ "/LoadAssetBundlePack()/abName is null ,请检查！");
                 yield return null;
             }
 
@@ -80,21 +80,20 @@ namespace AssetBundleFramework
             }
 
             //把当前场景加入集合中。
-            if (!_DicAllScenes.ContainsKey(classify))
+            if (!_DicAllClassify.ContainsKey(classify))
             {
                 MultiABMgr multiMgrObj = new MultiABMgr(abName);
-                _DicAllScenes.Add(classify, multiMgrObj);
+                _DicAllClassify.Add(classify, multiMgrObj);
             }
 
             //调用下一层（“多包管理类”）
-            MultiABMgr tmpMultiMgrObj = _DicAllScenes[classify];
+            MultiABMgr tmpMultiMgrObj = _DicAllClassify[classify];
             if (tmpMultiMgrObj==null)
             {
                 Debug.LogError(GetType() + "/LoadAssetBundlePack()/tmpMultiMgrObj is null ,请检查！");
             }
             //调用“多包管理类”的加载指定AB包。
             yield return tmpMultiMgrObj.LoadAssetBundle(abName, loadAllCompleteHandle);
-
         }//Method_end
         
         /// <summary>
@@ -107,9 +106,9 @@ namespace AssetBundleFramework
         /// <returns></returns>
         private UnityEngine.Object LoadAsset(string abName, string assetName,bool isCache = true, BundleClassify classify = BundleClassify.Normal)
         {
-            if (_DicAllScenes.ContainsKey(classify))
+            if (_DicAllClassify.ContainsKey(classify))
             {
-                MultiABMgr multObj = _DicAllScenes[classify];
+                MultiABMgr multObj = _DicAllClassify[classify];
                 return multObj.LoadAsset(abName, assetName, isCache);
             }
             Debug.LogError(GetType()+ "/LoadAsset()/找不到分类包，无法加载（AB包中）资源,请检查！  scenesName="+ classify);
@@ -131,13 +130,13 @@ namespace AssetBundleFramework
                 LoadBundleAsset(abName, assetName, assetLoadComplete, isCache, classify);
             };
 
-            if (!_DicAllScenes.ContainsKey(classify))                                           //判断当前分类包是否已经创建
+            if (!_DicAllClassify.ContainsKey(classify))                                           //判断当前分类包是否已经创建
             {
                 StartCoroutine(LoadAssetBundlePack(abName, loadCompleteCallback, classify));    //创建分类包加载器并加载给定AB包
                 return;
             }
 
-            MultiABMgr tmpMultiABMgr = _DicAllScenes[classify];
+            MultiABMgr tmpMultiABMgr = _DicAllClassify[classify];
             if (!tmpMultiABMgr.AssetBundleIsLoaded(abName))                                       //判断AB包是否已经加载
             {
                 if (tmpMultiABMgr.AssetBundleIsLoading(abName))                                   //判断AB包是否正在加载
@@ -158,13 +157,13 @@ namespace AssetBundleFramework
         /// <param name="scenesName">场景名称</param>
         public void DisposeAllAssets(BundleClassify classify)
         {
-            if (_DicAllScenes.ContainsKey(classify))
+            if (_DicAllClassify.ContainsKey(classify))
             {
-                MultiABMgr multObj = _DicAllScenes[classify];
+                MultiABMgr multObj = _DicAllClassify[classify];
                 multObj.DisposeAllAsset();
             }
             else {
-                Debug.LogError(GetType() + "/DisposeAllAssets()/找不到场景名称，无法释放资源，请检查！  scenesName=" + classify);
+                Debug.LogError(GetType() + "/DisposeAllAssets()/找不到分类包名称，无法释放资源，请检查！  classify=" + classify);
             }
         }
 
