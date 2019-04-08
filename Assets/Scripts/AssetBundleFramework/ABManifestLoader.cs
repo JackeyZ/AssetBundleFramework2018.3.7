@@ -39,16 +39,18 @@ namespace AssetBundleFramework
         /// <returns></returns>
         public IEnumerator ManifestLoad()
         {
-            UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(_loadPath);
-            yield return request.SendWebRequest();
-            _manifestBundle = (request.downloadHandler as DownloadHandlerAssetBundle).assetBundle;
-            if (_manifestBundle == null)
+            using (UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(_loadPath))
             {
-                Debug.LogError(GetType() + "读取manifest失败：" + _loadPath);
-                yield return null;
+                yield return request.SendWebRequest();
+                _manifestBundle = (request.downloadHandler as DownloadHandlerAssetBundle).assetBundle;
+                if (_manifestBundle == null)
+                {
+                    Debug.LogError(GetType() + "读取manifest失败：" + _loadPath);
+                    yield return null;
+                }
+                _manifest = _manifestBundle.LoadAsset(AssetBundleDefined.ASSETBUNDLE_MANIFEST_STR) as AssetBundleManifest;
+                _isLoadFinish = true;
             }
-            _manifest = _manifestBundle.LoadAsset(AssetBundleDefined.ASSETBUNDLE_MANIFEST_STR) as AssetBundleManifest;
-            _isLoadFinish = true;
         }
 
         public AssetBundleManifest GetManifest()
