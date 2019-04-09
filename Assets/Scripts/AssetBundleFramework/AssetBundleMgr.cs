@@ -125,30 +125,30 @@ namespace AssetBundleFramework
         /// <param name="classify">分类包</param>
         public void LoadBundleAsset(string abName, string assetName, Action<UnityEngine.Object> assetLoadComplete, bool isCache = true, BundleClassify classify = BundleClassify.Normal)
         {
-            Action<string> loadCompleteCallback = delegate (string assetBundleName)            //AB包加载完成的回调
+            Action<string> loadCompleteCallback = delegate (string assetBundleName)                 //AB包加载完成的回调
             {
                 LoadBundleAsset(abName, assetName, assetLoadComplete, isCache, classify);
             };
 
-            if (!_DicAllClassify.ContainsKey(classify))                                           //判断当前分类包是否已经创建
+            if (!_DicAllClassify.ContainsKey(classify))                                             //判断当前分类包是否已经创建
             {
-                StartCoroutine(LoadAssetBundlePack(abName, loadCompleteCallback, classify));    //创建分类包加载器并加载给定AB包
+                StartCoroutine(LoadAssetBundlePack(abName, loadCompleteCallback, classify));        //创建分类包加载器并加载给定AB包
                 return;
             }
 
             MultiABMgr tmpMultiABMgr = _DicAllClassify[classify];
-            if (!tmpMultiABMgr.AssetBundleIsLoaded(abName))                                       //判断AB包是否已经加载
+            if (!tmpMultiABMgr.AssetBundleIsLoaded(abName))                                         //判断AB包是否已经加载
             {
-                if (tmpMultiABMgr.AssetBundleIsLoading(abName))                                   //判断AB包是否正在加载
+                if (tmpMultiABMgr.AssetBundleIsLoading(abName))                                     //判断AB包是否正在加载
                 {
                     tmpMultiABMgr.AddLoadCallBack(abName, loadCompleteCallback);
                     return;
                 }
-                StartCoroutine(tmpMultiABMgr.LoadAssetBundle(abName, loadCompleteCallback));    //加载AB包
+                StartCoroutine(tmpMultiABMgr.LoadAssetBundle(abName, loadCompleteCallback));        //加载AB包
                 return;
             }
 
-            assetLoadComplete(LoadAsset(abName, assetName, isCache, classify));                 //资源加载完成调用回调函数，参数为加载进来的资源
+            assetLoadComplete(LoadAsset(abName, assetName, isCache, classify));                     //资源加载完成调用回调函数，参数为加载进来的资源（若AB包已经加载了，则这是一个同步加载）
         }
 
         /// <summary>

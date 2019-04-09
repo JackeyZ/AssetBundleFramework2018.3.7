@@ -5,12 +5,10 @@ using UnityEngine;
 
 public class PrefabsTest : MonoBehaviour
 {
-    Action<UnityEngine.Object> LoadCallBackDel;
     // Start is called before the first frame update
     void Start()
     {
-        LoadCallBackDel += LoadCallBack;;
-        PrefabLoader.LoadPrefab("ui/prefabs.u3dassetbundle", "Canvas", LoadCallBackDel);
+        PrefabLoader.LoadPrefab("ui/prefabs.u3dassetbundle", "Canvas", LoadCallBack);
     }
 
     void LoadCallBack(UnityEngine.Object obj)

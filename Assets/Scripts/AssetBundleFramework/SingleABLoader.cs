@@ -39,7 +39,7 @@ namespace AssetBundleFramework
         private bool _Loaded = false;       // 是否加载成功
 
         private bool _IsDispose = false;    // 是否已卸载
-
+        
         /// <summary>
         /// 是否加载成功
         /// </summary>
@@ -73,7 +73,13 @@ namespace AssetBundleFramework
                 _Loading = true;
                 using (UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(_ABDownLoadPath))
                 {
-                    yield return request.SendWebRequest();
+                    request.SendWebRequest();
+                    while (!request.isDone)
+                    {
+                        //Debug.Log(_ABDownLoadPath + "下载中（" + request.downloadProgress * 100 + "%）");
+                        yield return null;
+                    }
+
                     //取得ab的方式1
                     //AssetBundle ab_prefab = DownloadHandlerAssetBundle.GetContent(request);
                     //取得ab的方式2
@@ -84,7 +90,6 @@ namespace AssetBundleFramework
                         if (ab_prefab == null)
                         {
                             Debug.LogError(GetType() + "LoadAssetBundle失败：" + _ABDownLoadPath);
-                            yield return null;
                         }
                         else
                         {
@@ -95,6 +100,10 @@ namespace AssetBundleFramework
                                 _LoadCallback(_ABName);
                             }
                         }
+                    }
+                    else
+                    {
+                        ab_prefab.Unload(true);
                     }
                 }
             }

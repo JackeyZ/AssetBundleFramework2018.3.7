@@ -11,7 +11,7 @@ public static class ImageExtensions
     /// <summary>
     /// Load the sprite into this image.
     /// </summary>
-    public static void LoadSprite(this Image image, string bundleName, string spriteName, Action complete = null)
+    public static void LoadSprite(this Image image, string bundleName, string spriteName, bool isCache = true, Action complete = null)
     {
 #if UNITY_EDITOR
         image.enabled = false;
@@ -46,9 +46,9 @@ public static class ImageExtensions
                         return;
                     }
                     Debug.LogError(bundleName + ":" + spriteName + "加载失败");
-                });
+                }, isCache);
             }
-        });
+        }, isCache);
         //image.sprite = AssetBundleFramework.AssetLoadInEditor.LoadObject<Sprite>(bundleName, spriteName);
         //if (complete != null)
         //{
