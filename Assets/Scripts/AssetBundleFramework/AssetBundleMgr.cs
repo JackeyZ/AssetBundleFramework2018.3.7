@@ -22,10 +22,8 @@ using UnityEngine;
 
 namespace AssetBundleFramework
 {
-	public class AssetBundleMgr : MonoBehaviour
-	{
-        //本类实例
-        private static AssetBundleMgr _Instance;
+	public class AssetBundleMgr : MonoSingleton<AssetBundleMgr>
+    {
         //场景集合
         private Dictionary<BundleClassify, MultiABMgr> _DicAllClassify = new Dictionary<BundleClassify, MultiABMgr>();
         //AssetBundle （清单文件） 系统类
@@ -35,14 +33,14 @@ namespace AssetBundleFramework
         private  AssetBundleMgr(){}
 
         //得到本类实例
-        public static AssetBundleMgr GetInstance()
-        {
-            if (_Instance == null)
-            {
-                _Instance = new GameObject("_AssetBundleMgr").AddComponent<AssetBundleMgr>();
-            }
-            return _Instance;
-        }
+        //public static AssetBundleMgr GetInstance()
+        //{
+        //    if (_Instance == null)
+        //    {
+        //        _Instance = new GameObject("_AssetBundleMgr").AddComponent<AssetBundleMgr>();
+        //    }
+        //    return _Instance;
+        //}
 
         void Awake()
         {

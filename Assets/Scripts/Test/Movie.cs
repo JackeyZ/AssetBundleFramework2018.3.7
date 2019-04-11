@@ -22,18 +22,9 @@ public class Movie : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        AssetBundleFramework.AssetBundleMgr.GetInstance().LoadBundleAsset("commonscene/video.u3dassetbundle", "【www.ai998.cn】4-12", LoadCallback);
+        StartCoroutine(playVideo());
     }
-
-    void LoadCallback(UnityEngine.Object obj)
-    {
-        videoToPlay = obj as VideoClip;
-
-        if (videoToPlay != null)
-        {
-            StartCoroutine(playVideo());
-        }
-    }
+    
 
     IEnumerator playVideo()
     {
@@ -84,44 +75,44 @@ public class Movie : MonoBehaviour
 
     void Update()
     {
-        //double curPlayTime = videoPlayer.time;
-        //text.text = (curPlayTime - (curPlayTime % 1)).ToString() + " / " + (videoPlayer.clip.length - videoPlayer.clip.length % 1).ToString();
-        //if (Input.GetKeyDown(KeyCode.RightArrow))
-        //{
-        //    double curTime = videoPlayer.time + videoPlayer.clip.length / 100;
-        //    if (Input.GetKey(KeyCode.LeftShift))
-        //    {
-        //        curTime += videoPlayer.clip.length / 10;
-        //    }
-        //    if (curTime > videoPlayer.clip.length)
-        //    {
-        //        curTime = videoPlayer.clip.length;
-        //    }
-        //    videoPlayer.time = curTime;
-        //}
-        //if (Input.GetKeyDown(KeyCode.LeftArrow))
-        //{
-        //    double curTime = videoPlayer.time - videoPlayer.clip.length / 100;
-        //    if (Input.GetKey(KeyCode.LeftShift))
-        //    {
-        //        curTime -= videoPlayer.clip.length / 10;
-        //    }
-        //    if (curTime < 0)
-        //    {
-        //        curTime = 0;
-        //    }
-        //    videoPlayer.time = curTime;
-        //}
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    if (videoPlayer.isPlaying)
-        //    {
-        //        videoPlayer.Pause();
-        //    }
-        //    else
-        //    {
-        //        videoPlayer.Play();
-        //    }
-        //}
+        double curPlayTime = videoPlayer.time;
+        text.text = (curPlayTime - (curPlayTime % 1)).ToString() + " / " + (videoPlayer.clip.length - videoPlayer.clip.length % 1).ToString();
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            double curTime = videoPlayer.time + videoPlayer.clip.length / 100;
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                curTime += videoPlayer.clip.length / 10;
+            }
+            if (curTime > videoPlayer.clip.length)
+            {
+                curTime = videoPlayer.clip.length;
+            }
+            videoPlayer.time = curTime;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            double curTime = videoPlayer.time - videoPlayer.clip.length / 100;
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                curTime -= videoPlayer.clip.length / 10;
+            }
+            if (curTime < 0)
+            {
+                curTime = 0;
+            }
+            videoPlayer.time = curTime;
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (videoPlayer.isPlaying)
+            {
+                videoPlayer.Pause();
+            }
+            else
+            {
+                videoPlayer.Play();
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ public static class ImageExtensions
     {
 #if UNITY_EDITOR
         image.enabled = false;
-        AssetBundleFramework.AssetBundleMgr.GetInstance().LoadBundleAsset(bundleName, spriteName, (obj) => {
+        AssetBundleFramework.AssetBundleMgr.Instance.LoadBundleAsset(bundleName, spriteName, (obj) => {
             if (image != null && obj != null)
             {
                 //如果是贴图
@@ -32,7 +32,7 @@ public static class ImageExtensions
                     return;
                 }
                 //没有加载到贴图则加载图集
-                AssetBundleFramework.AssetBundleMgr.GetInstance().LoadBundleAsset(bundleName, AssetBundleFramework.AssetBundleDefined.SPRITE_ATLAS_NAME, (atlasObj) =>
+                AssetBundleFramework.AssetBundleMgr.Instance.LoadBundleAsset(bundleName, AssetBundleFramework.AssetBundleDefined.SPRITE_ATLAS_NAME, (atlasObj) =>
                 {
                     SpriteAtlas atlas = atlasObj as SpriteAtlas;
                     if (atlas != null)
@@ -56,7 +56,7 @@ public static class ImageExtensions
         //}
 #else
         image.enabled = false;
-        AssetBundleFramework.AssetBundleMgr.GetInstance().LoadBundleAsset(bundleName, spriteName, (obj) => {
+        AssetBundleFramework.AssetBundleMgr.Instance.LoadBundleAsset(bundleName, spriteName, (obj) => {
             if (image != null && obj != null)
             {
                 //如果是贴图
@@ -66,22 +66,30 @@ public static class ImageExtensions
                     Sprite sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f));
                     image.sprite = sprite as Sprite;
                     image.enabled = true;
+                    if(complete != null)
+                    {
+                        complete();
+                    }
                     return;
                 }
                 //没有加载到贴图则加载图集
-                AssetBundleFramework.AssetBundleMgr.GetInstance().LoadBundleAsset(bundleName, AssetBundleFramework.AssetBundleDefined.SPRITE_ATLAS_NAME, (atlasObj) =>
+                AssetBundleFramework.AssetBundleMgr.Instance.LoadBundleAsset(bundleName, AssetBundleFramework.AssetBundleDefined.SPRITE_ATLAS_NAME, (atlasObj) =>
                 {
                     SpriteAtlas atlas = atlasObj as SpriteAtlas;
                     if (atlas != null)
                     {
                         image.sprite = atlas.GetSprite(spriteName);
                         image.enabled = true;
+                        if (complete != null)
+                        {
+                            complete();
+                        }
                         return;
                     }
                     Debug.LogError(bundleName + ":" + spriteName + "加载失败");
-                });
+                }, isCache);
             }
-        });
+        }, isCache);
 #endif
     }
 }

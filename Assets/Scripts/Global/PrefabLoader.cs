@@ -10,7 +10,7 @@ public class PrefabLoader
 #if UNITY_EDITOR
         LoadCompete(AssetBundleFramework.AssetLoadInEditor.LoadObject<UnityEngine.Object>(abName, assetName));
 #else
-        AssetBundleFramework.AssetBundleMgr.GetInstance().LoadBundleAsset(abName, assetName, LoadCompete);
+        AssetBundleFramework.AssetBundleMgr.Instance.LoadBundleAsset(abName, assetName, LoadCompete);
 #endif
     }
 }

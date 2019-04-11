@@ -1,11 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+/// <summary>
+/// MonoBehaviour单例
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class MonoSingleton<T> : MonoBehaviour where T : UnityEngine.Component{
+    private static T _Instance;
 
-public class MonoSingleton<T> : MonoBehaviour where T : class {
-    public static T Instance;
-    public void Awake()
+    public static T Instance
     {
-        Instance = this as T;
+        get
+        {
+            if (_Instance == null)
+            {
+                _Instance = new GameObject("MonoSingletonScripts").AddComponent<T>();
+            }
+            return _Instance;
+        }
     }
 }
