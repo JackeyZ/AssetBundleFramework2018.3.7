@@ -32,16 +32,6 @@ namespace AssetBundleFramework
 
         private  AssetBundleMgr(){}
 
-        //得到本类实例
-        //public static AssetBundleMgr GetInstance()
-        //{
-        //    if (_Instance == null)
-        //    {
-        //        _Instance = new GameObject("_AssetBundleMgr").AddComponent<AssetBundleMgr>();
-        //    }
-        //    return _Instance;
-        //}
-
         void Awake()
         {
             //加载Manifest清单文件（主清单，记录着所有AB包之间的依赖关系）

@@ -16,12 +16,12 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
-
 namespace AssetBundleFramework
 {
+    /*******************该类已弃用，导入资源自动标记AB包*********************/
     public class AutoBuildAssetBundlePath
     {
-        [MenuItem("AssetBundleTools/BuildAllAssetBundlePath")]
+        //[MenuItem("AssetBundleTools/BuildAllAssetBundlePath")]
         public static void BuildAllAssetBundlePath()
         {
             /*

@@ -89,6 +89,7 @@ public class Movie : MonoBehaviour
                 curTime = videoPlayer.clip.length;
             }
             videoPlayer.time = curTime;
+            videoPlayer.externalReferenceTime = curTime;
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -102,6 +103,7 @@ public class Movie : MonoBehaviour
                 curTime = 0;
             }
             videoPlayer.time = curTime;
+            videoPlayer.externalReferenceTime = curTime;
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
