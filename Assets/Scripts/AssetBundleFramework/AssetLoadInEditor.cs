@@ -9,6 +9,9 @@ using UnityEngine.UI;
 
 namespace AssetBundleFramework
 {
+    /// <summary>
+    /// Editor下根据AB路径和资源名称找到资源路径然后加载
+    /// </summary>
     public class AssetLoadInEditor
     {
 #if UNITY_EDITOR
@@ -29,6 +32,7 @@ namespace AssetBundleFramework
         /// <returns></returns>
         public static string GetAssetPath(string bundleName, string assetName)
         {
+            // 根据包名和资源名获取资源路径，因为后缀名可能不一样所以获取的是数组
             string[] paths = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(bundleName, Path.GetFileNameWithoutExtension(assetName));
             if (paths.Length == 0)
             {
